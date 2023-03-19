@@ -1,0 +1,399 @@
+一、Java篇
+
+	Java中的类加载器：
+		系统加载器
+			引导类加载器：
+				1、由C/C++代码实现，用于加载指定的JDK的核心类库
+				2、Java虚拟机的启动就是通过引导类加载器创建一个初始类来完成的
+				3、该加载器不能被Java代码访问、但可以查询某个类是否被引导类加载器加载过
+			Extensions ClassLoader（拓展类加载器）：
+			Application ClassLoader（应用程序类加载器）：
+				
+		自定义类加载器：继承ClassLoader,重写findClass方法,并在findClass方法中调用defineClass方法
+		
+		继承关系：
+			ClassLoader
+				--SecureClassLoader
+					--URLClassLoader
+						--ExtClassLoader
+						--AppClassLoader
+						
+		双亲委托机制：
+			委托：CustomClassLoader -> AppClassLoader -> ExtClassLoader -> BootStrapClassLoader
+			加载：BootStrapClassLoader -> ExtClassLoader -> AppClassLoader -> CustomClassLoader
+			
+		loadClass -> findLoadedClass -> 父ClassLoader的loadClass ->如果父类都没找到，那就判断BootStrapClassLoader能不能加载 -》不能加载就交给当前的ClassLoader去加载 -> 如果还是不能加载，继续交给子ClassLoader去加载
+	
+	Android中的类加载器：
+		系统加载器
+			BootClassLoader：android系统启动时预加载一些常用类，在Zygote进程的main方法中创建
+			PathClassLoader：加载系统类和应用程序的类，在SystemServer进程中采用工厂模式创建的
+			DexClassLoader
+				
+		自定义类加载器
+		
+			继承关系：
+			ClassLoader
+				--BootClassLoader是内部类
+
+				--BaseDexClassLoader：ClassLoader的具体实现类
+					--InMemoryDexClassLoader：8.0新增的类加载器，用于加载内存中的dex文件
+					--PathClassLoader
+					--DexClassLoader
+				
+				--SecureClassLoader
+					--URLClassLoader
+
+
+	新生代：标记-复制算法
+		Eden : fromSurvivor : toSurvivor = 8:1:1
+		将Eden中存活的对象和fromSurvivor中存活的对象复制到toSurvivor区域，然后回收Eden和fromSurvivor区域的对象，然后fromSurvivor区域和toSurvivor区域控件位置互换
+	
+	老年代：标记-压缩算法或标记-清除算法
+
+二、Android篇
+
+	一、Android框架体系架构
+		
+		1.1 高级UI
+			
+			触摸事件分发机制
+			View渲染机制：onMeasure、onLayout、onDraw
+			常见View的使用以及源码解析：RecyclerView、CardView、ViewPager、WebView
+			布局ViewGroup：ConstraintLayout、LinearLayout、RelativeLayout、FrameLayout、GridLayout
+			自定义View实战：
+				动画：帧动画、补间动画、属性动画、ViewPropertyAnimator、NineOldAndroids、PathMeasure动画、SVG动画
+				Canvas Paint Rect Rect Region  GestureDetector window与windowManager、bitmap与drawable
+				Camera、Matrix、单点触控、多点触控、Scroller、ViewDragHelper、ViewConfiguration
+				
+		1.2 Android 组件内核
+			Activity：四大启动模式与Intent Flag   APK启动流程与ActivityThread   Activity生命周期源码解析  实战Splash广告载入与延时跳转
+			Fragment
+			Service
+
+
+		1.3 IPC
+		
+		1.4 数据持久化
+		
+		1.5 Framework内核解析
+		
+		组件化：层层嵌套，基于UI层面的封装。组件最为重要的就是重用（复用），位于框架最底层，其他功能都依赖于组件，可供不同功能使用，独立性强 ，就像一个小小的单位，多个组件可以组合成组件库，方便调用和复用，组件间也可以嵌套，小组件组合成大组件。
+
+		模块化：基于代码层面的封装，分属同一功能/业务的代码进行分装成独立的模块，可以独立的运行，以页面、功能或其他不同粒度划分程度不同的模块，模块间通过接口调用，目的是降低模块间的耦合。
+		举一例子：模块就像多个 USB 插口的充电宝，可以和多部手机充电，接口可以随移插拔。复用性极强，可以独立管理。就像是独立的功能和项目（如淘宝：注册、登录、购物等），可以调用组件来组成模块，多个模块可以组合成业务框架。
+
+		
+		
+	
+	2、gradle
+	
+	3、git
+	
+	4、kotlin
+	
+	5、jetpact
+	
+		Lifecycler：
+			1、LifecycleObserver       getLifecycler().addObserver() 
+			2、LifecyclerService       getLifecycler().addObserver() 
+			3、ProcessLifecyclerOwner
+	
+	6、C/C++
+	
+	
+	Android各版本新特性：
+		
+		android 5.0  
+			Material Design设计风格
+			ART虚拟机
+			RecyclerView
+			CardView
+			悬挂式Notification
+			Toolbar
+			
+		android 6.0  运行时权限机制
+		
+		android 7.0    多窗口模式:清单文件中，设置android:resizeableActivity="false"可以禁用多窗口模式（24以下要禁用横竖屏切换）
+		android 8.0    新增通知渠道、支持画中画模式、后台服务限制和隐私广播的限制、http的限制、应用内安装权限
+		android 9.0    全面屏、AnimatedImageDrawable动画
+		android 10.0
+		android 11.0
+		android 12.0
+		
+	
+	Android系统启动
+		
+		加电自检 -> 引导芯片代码（固化在ROM中）执行，加载引导程序BootLoader到RAM中 -> BootLoader加载OS -> Linux内核启动（设置缓存、被保护存储器、计划列表、加载驱动） -> 寻找系统文件中的init.rc文件，并启动init进程
+		
+		system/core/init/init.cpp
+		init进程启动流程：0
+			1、创建和挂载启动所需的文件目录
+			2、初始化和启动属性服务
+			3、解析init.rc配置文件，并启动zygote进程  // init.rc配置文件是android初始化语言编写的脚本，这种语言主要包含5种类型语句：Action、Command、Servcie、Option、Import
+
+		frameworks/base/cmds/app_process/app_main.cpp
+		Zygote进程启动流程：
+			AndroidRuntime#start()启动zygote
+			1、启动java虚拟机
+			2、为java虚拟机注册JNI方法
+			3、通过JNI调用ZygoteInit#main方法，进入java框架层
+			
+			ZygoteInit#main
+				1、创建一个server端的socket
+				2、预加载类和资源
+				3、启动System_server进程
+				4、等待AMS请求创建新的应用程序进程
+				
+		SystemServer进程：
+			1、启动bind线程池
+			2、创建SystemServiceManager,其用于对系统的服务进行创建、启动和生命周期管理
+			3、启动各种系统服务
+				引导服务：AMS PMS
+				核心服务
+				其他服务：WMS
+				
+		Lanucher的启动流程：
+			SystemServer#startOtherService -> AMS#systemReady -> ActivityStackSupervisor#resumeFocusedStackTopActivityLocked ->ActivityStack#resumeTopActivityUncheckedLocked -> ActivityStack#resumeTopActivityInnerLocked
+			->  ActivityStackSupervisor#resumeHomeStackTask -> AMS#startHomeActivityLocked
+				
+				
+			
+		应用程序进程的启动流程：
+			AMS#startProcessLocked -> Process#start -> ZygoteProcess#start -> ZygoteProcess#startViaZygote -> ZygoteProcess#zygoteSendArgsAndGetResult -> ZygoteProcess#openZygoteSocketIfNeeded ->ZygoteState#connect
+			
+			ZygoteInit#main ->ZygoteServer#runSelectLoop ->ZygoteConnection#runOnce -> ZygoteConnection#handleChildProc ->ZygoteInit#zygoteInit -> ZygoteInit#nativeZygoteInit和RuntimeInit#applicationInit -> RuntimeInit#invokeStaticMain 
+			-> ZygoteInit#MethodAndArgsCaller -> ActivityThread#main
+	
+	四大组件启动流程
+		
+		根Activity的启动流程：
+		
+			Launcher#startActivitySafely -> Activity#startActivity ->Activity#st      artActivityForResult -> Instrumentation#execStartActivity ->IActivityManager#startActivity -> AMS#startActivity 
+			
+			Instrumentation：主要用来监控应用程序和系统的交互
+			
+			AMS#startActivity ->AMS#startActivityAsUser -> ActivityStarter#startActivityMayWait ->ActivityStarter#startActivityLocked -> ActivityStarter#startActivity(创建ActivityRecord) -> ActivityStarter#startActivity -> ActivityStarter#startActivityUnchecked (创建TaskRecord、处理与栈管理相关的逻辑)
+			->ActivityStackSupervisor#resumeFocusedStackTopActivityLocked -> ActivityStack#resumeTopActivityUncheckedLocked -> ActivityStack#resumeTopActivityInnerLocked -> ActivityStackSupervisor#startSpecificActivityLocked -> ActivityStackSupervisor#realStartActivityLocked 
+			-> ApplicationThread#SchduleLaunchActivity -> ActivityThread#sendMessage -> H#handleMessage -> ActivityThread#performLaunchActivity -> 创建Activity
+			
+			
+		Service的启动流程：
+		
+			ContextWrapper#startService -> ContextImpl#startService ->ContextImpl#startServiceCommon -> IActivityManager#startService -> AMS#startService(6个参数) -> ActiveServices#startServiceLocked（8个参数） -> ActiveServices#startServiceInnerLocked ->ActiveServices#bringUpServiceLocked -> ActiveServices#realStartServiceLocked 
+			-> ApplicationThread#scheduleCreateService -> ActivityThread#sendMessage -> H#handleMessage -> ActivityThread#handleCreateService -> Service#onCreate
+
+			ActiveServices#startServiceLocked：调用retrieveServiceLocked方法获取与参数service对应的serviceRecord,如果没有找到，就调用PMS去获取参数service对应的service信息，并封装到ServiceRecord对象中，并将该对象封装为ServiceLookupResult返回
+											   后面会取出该ServiceRecord对象作为ActiveServices#startServiceInnerLocked方法的参数传入
+											   
+			ActiveServices#bringUpServiceLocked：根据进程名称以及service的uid,调用AMS的getProcessRecordLocked方法，查询运行service的应用程序进程是否存在
+			
+			
+		Service的绑定过程：
+			ContextWrapper#bindService -> ContextImpl#bindService -> ContextImpl#bindServiceCommon -> IActivityManager#bindService -> AMS#bindService -> ActiveServices#bindServiceLocked -> ActiveServices#requestServiceBindingLocked -> ApplicationThread#scheduleBindService -> ActivityThread#sendMessage
+			
+			-> H#handleMessage -> ActivityThread#handleBindService（是否重新绑定，有两个分支） 
+			
+				-> 第一次绑定：走service的onBind方法，并调用AMS#publishService ->  ActiveServices#publishServiceLocked ->InnerConnection#connected -> ServiceDispatcher#connected -> RunConnection#run -> RunConnection#doConnected -> ServiceConnection#onServiceConnected
+				-> 是重新绑定：走service的onRebind方法，并调用AMS#serviceDoneExecuting ->
+				
+			RunConnection：是LoaderApk的内部类，实现了runnable接口
+			
+			ContextImpl#bindServiceCommon：调用了LoadedApk类型的对象mPackageInfo的getServiceDispatcher方法，该方法会将ServiceConnection对象封装成IserviceConnection类型的对象sd，IServiceConnection是Binder类型，这样service的绑定就支持了跨进程
+			
+			ActiveServices#bindServiceLocked：调用了ServiceRecord的retrieveAppBindingLocked方法，并返回一个AppBindRecord类型的对象（这个对象维护着service与应用程序进程之间的关联，存储了谁（ProcessRecord）绑定了谁(ServiceRecord)的信息以及Intent的信息（IntentBindRecord），其中的ArraySet<ConnectionRecord>存储了通信记录信息）
+											  具体：创建IntentBindRecord对象，创建AppBindRecord对象，并以ProcessRecord为key,以AppBindRecord为value,保存在IntentBindRecord的apps中，apps是一个ArrayMap<ProcessRecord, AppBindRecord>类型
+											  此方法包含了启动服务的流程、然后又调用了c.conn.connected()方法，这个方法会ServiceDispatcher.connected()方法，ServiceDispatcher.connected()方法会调用H的post方法向主线程发送消息（将RunConnection的内容运行在主线程），并解决跨进程通信的问题；
+											  IServiceConnection的具体实现是ServiceDispatcher.InnerConnection，ServiceDispatcher又是LoadedApk的内部类，ServiceDispatcher类型的对象在InnerConnection对象中是一个弱引用
+											  
+		
+		
+		广播的注册、发送和接收
+			广播的注册：
+				ContextWrapper#registerReceiver -> ContextImpl#registerReceiver ->ContextImpl#RegisterReceiverInternal -> IActivityManager#registerReceiver -> AMS#registerReceiver
+				
+				ContextImpl#RegisterReceiverInternal：获取IIntentReceiver对象，它在LoadedApk.ReceiverDispatcher.InnerReceiver中实现；获取ReceiverList,并创建BroadcastFilter分别添加到ReceiverList、mReceiverResolver中（mReceiverResolver是IntentResolver类型，这样就实现了广播的注册）
+				
+			广播的发送：
+				ContextWrapper#sendBroadcast -> ContextImpl#sendBroadcast -> IActivityManager#broadcastIntent -> AMS#broadcastIntent -> AMS#broadcastIntentLocked
+				-> BroadcastQueue#scheduleBroadcastLocked -> BroadcastHandler#handleMessage -> BroadcastQueue#processNextBroadCast ->  BroadcastQueue#deliverToRegisteredReceiverLocked ->  BroadcastQueue#performReceiveLocked ->ApplicationThread#scheduleRegisteredReceiver
+				-> InnerReceiver#performReceive -> ReceiverDispatcher#performReceive -> Args#run ->BroadcastReceiver#onReceive
+				
+				AMS#broadcastIntentLocked：调用verifyBroadcastLocked方法验证广播是否合法，将无序广播和有序广播按照优先级高低不同存储在不同的列表中，再讲这两个列表合并到receviers列表中，创建BroadcastRecord,并将receviers传进去	
+
+
+		ContentProvider的启动过程：
+			ContentResolver#query -> ContentResolver#acquireUnstableProvider -> ApplicationContentResolver#acquireUnstableProvider -> ActivityThread#acquireProvider -> IActivityManager#getContentProvider -> AMS#getContentProvider -> AMS#getContentProviderImpl 
+			-> 创建应用程序进程 -> ActivityThread#main -> ActivityThread#attch -> AMS#attachApplication -> AMS#attachApplicationLocked -> ApplicationThread#bindApplication -> ActivityThread#sendMessage -> H#handleMessage -> ActivityThread#handleBindApplication -> ActivityThread#installContentProviders
+			->ActivityThread#installProvider -> ContentProvider#attachInfo ->最后还会调用AMS的publishContentProvider方法，将此ContentProvider保存在AMS的mProviderMap中，起到缓存的作用
+			
+	JVM与DVM的区别
+		基于的架构不同：JVM是基于栈的；DVM是基于寄存器的
+		执行的字节码不同：
+		其他：DVM有共享机制、JVM没有
+		
+	
+	Dalvik虚拟机和ART的区别：
+		1、JIT与AOT
+		2、32位与64位（兼容32位）
+		3、ART改进了垃圾回收机制
+		4、运行时堆内存划分不同：Dalvik(ZygoteSpace、AllocationSpaces)、ART(ZygoteSpace、AllocationSpaces、ImageSpace、Large Object Space),其中ZygoteSpace和ImageSpace是进程间共享的
+		
+	热修复：
+		资源修复：
+			Instant Run原理：
+				1、创建新的AssetManager,通过反射调用addAssetPath方法加载外部的资源，这样新创建的AseetManager就含有了外部的资源
+				2、将AssetManager类型的mAsset字段的引用全部替换为新创建的AssetManager
+				
+		代码修复：
+				底层替换方案：   
+					限制：不能增减原有类的字段和方法
+					原理：方法反射调用的invoke方法是native方法，对应JNI层的方法为Method_inVoke -> InvokeMethod方法：javaMethod在ART虚拟机中应用一个ArtMethod指针，这个结构体包含了java方法的所有信息，包括执行入口，访问权限、所属类和代码执行地址
+						  通过方法的执行入口可以调用方法、替换ArtMethod结构体中的字段或整个ArtMethod结构体，这就是底层替换方案
+				类加载方案：ClassLoader原理和双亲委派机制
+				Instant Run方案：ASM在每一个方法里面注入了一些代码（生成IncrementalInterface替换类对象，并调用它的access$dispatch方法，当没有修改时，IncrementalInterface对象为空；当修改时，会生成替换类（实现了IncrementalInterface接口）
+
+		动态链接库的修复：
+			1、将so补丁插入到NativeLibraryElement数组的前面，让它先加载
+			2、调用System.load方法来接管so的加载入口
+			
+	Hook技术
+		基于反射和源码
+		
+	cookie和token的区别
+	1、token存在哪儿都行，客户端可存放在localstorage或者cookie，而服务器端则会存放于数据库(服务器端的session是直接放在内存中的)
+
+	2、cookie举例:服务员看你的身份证后，给你一个编号，以后，进行任何操作，都出示编号，然后服务员再去查看你是谁
+
+	   token举例:直接给服务员看自己的身份证
+
+	3、对于token而言，服务器不需要去查看你是谁，是无状态的，而cookie则是相对有状态的。
+
+	4、token的可拓展性更强。
+
+	5、token可抵御csrf，因为cookie容易伪造，但是token是不容易伪造的。
+		
+		
+	设计模式六大原则：
+		单一原则、里氏替换原则、依赖倒置原则、接口隔离原则、迪米特原则、开闭原则
+
+		1、单一原则（Single Responsibility Principle）：一个类或者一个方法只负责一项职责，尽量做到类的只有一个行为原因引起变化；a、业务对象（BO business object）、业务逻辑（BL business logic）拆分；
+
+		2、里氏替换原则（LSP liskov substitution principle）：子类可以扩展父类的功能，但不能改变原有父类的功能；（本质其实就是c++的多态）（目的：增强程序的健壮性）实际项目中，每个子类对应不同的业务含义，使父类作为参数，传递不同的子类完成不同的业务逻辑。
+
+		3、依赖倒置原则（dependence inversion principle）：面向接口编程；（通过接口作为参数实现应用场景），抽象就是接口或者抽象类，细节就是实现类
+
+	　　	含义：
+
+	　　　　	上层模块不应该依赖下层模块，两者应依赖其抽象；
+
+	　　　　	抽象不应该依赖细节，细节应该依赖抽象；
+
+			通俗点就是说变量或者传参数，尽量使用抽象类，或者接口；
+
+			【接口负责定义public属性和方法，并且申明与其他对象依赖关系，抽象类负责公共构造部分的实现，实现类准确的实现业务逻辑】
+
+		4、接口隔离原则（interface segregation principle）：建立单一接口；（扩展为类也是一种接口，一切皆接口）
+
+	　　　	定义：
+
+	　　　　	a.客户端不应该依赖它不需要的接口；
+
+	　　　　	b.类之间依赖关系应该建立在最小的接口上；
+
+			简单理解：复杂的接口，根据业务拆分成多个简单接口；（对于有些业务的拆分多看看适配器的应用）
+
+			【接口的设计粒度越小，系统越灵活，但是灵活的同时结构复杂性提高，开发难度也会变大，维护性降低】　　　
+
+		5、迪米特原则（law of demeter LOD）：最少知道原则，尽量降低类与类之间的耦合；一个对象应该对其他对象有最少的了解
+
+		6、开闭原则（open closed principle）：用抽象构建架构，用实现扩展原则；
+		
+	
+	Binder通信：
+		ProcessState::self() -> new ProcessState() -> open_Driver() + mmap + ioctl
+		defaultManagerService -> interface_cast(ProcessState::self()::getContextObject()) 
+		getContextObject():会new一个BpBinder()对象
+		interface_cast会调用IServiceManager的as_interface方法，这个方法会new BpServiceManager(new BpBiner(0)),mBpServiceManager派生自BpInterface,BpInterface派生自BpRefBase,BpRefBase中有一个mRemote值指向BpBinder
+		
+		addService -> BpBinder::transact -> IPCThreadState::transact -> IPCThreadState::writeTransactionData (将请求数据写入mOut)+  IPCThreadState::waitForResponse ->  talkWithDriver(里面又调用了ioctl函数)  -> BBinder::transact
+		
+		IPCThreadState:mIn,mOut
+		
+		
+	
+	音视频：
+		I 65
+		P 41
+	
+	
+		/frameworks/base/media/java/android/media/MediaPlayer.java
+		MediaPlayer.java
+			create方法：
+				1、new MediaPlayer()
+				2、setAudioAttributes()
+				   setAudioSessionId()
+				   setDataSource() 
+						非文件资源走JNI方法：nativeSetDataSource
+						文件资源最终走JNI方法：_setDataSource
+				   setDisplay()
+						调用Jni层的方法：setVideoSurface
+				3、prepare()
+			构造方法：
+				1、new EventHandler
+				2、new TimeProvider
+				3、new Vector<InputStream>
+				4、通过IBinder机制，得到IAppOpService对象
+				5、调用native_setup方法
+		Surface:管理数据
+		SurfaceHolder:管理Surface，可以监听surface的创建
+		SurfaceView：显示数据
+		Canvas:管理Surface的绘图操作
+				
+		/frameworks/base/jni/android_media_MediaPlayer.cpp
+		android_media_MediaPlayer.cpp
+		
+		frameworks/av/media/libmedia/include/media  中有很多头文件
+		
+		
+		
+			frameworks/av/media/libmedia/include/media/mediaplayer.h：
+				class MediaPlayer : public BnMediaPlayerClient,public virtual IMediaDeathNotifier{ }
+	
+			
+			frameworks/av/media/libmedia/include/media/IMediaPlayerClient.h：
+				class class IMediaPlayerClient: public IInterface{ }
+				class BnMediaPlayerClient:public BnInterface<IMediaPlayClient>{ }
+				
+				
+				
+	性能优化：
+		一、App的启动优化：Application.onCreate -> Activity.onCreate的过程中
+			黑白屏问题
+			异步加载、懒加载
+				条件是：不执行UI操作、不使用handler、对异步任务的要求不高
+			
+		二、UI优化：
+			CPU减少xml转换成对象的时间：减少布局加载的时间
+				布局优化
+					使用工具分析层次结构：LayoutInspector、monitor
+					1、使用merge
+					2、使用include
+					3、使用Viewstub
+
+			GPU减少重复绘制的时间：
+				过度绘制优化
+					1、减少背景重复
+					2、使用裁剪减少控件之间的重合部分
+
+		三、内存优化
+		
+		
+		四、网络优化
+		
+	
+
+三、Linux
+
+
+四、C/C++

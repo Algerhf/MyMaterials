@@ -95,9 +95,25 @@
 	5、jetpact
 	
 		Lifecycler：
-			1、LifecycleObserver       getLifecycler().addObserver() 
-			2、LifecyclerService       getLifecycler().addObserver() 
-			3、ProcessLifecyclerOwner
+			1、解耦Activity
+				如自定义控件继承自 LifecycleObserver   新版本可以继承DefaultLifecycleObserver
+				Activity添加：getLifecycler().addObserver() 
+				
+			2、解耦Service
+				Service继承LifecyclerService 
+				LocationObserver继承LifecycleObserver       
+				Service添加：getLifecycler().addObserver() 
+				
+			3、解耦Application
+				MyApplictionObserver继承LifecycleObserver
+				Application添加：ProcessLifecyclerOwner.get().addObserver()
+			
+		ViewModel
+		Databinding
+		Room
+		Navigation
+		WorkManager
+		
 	
 	6、C/C++
 	

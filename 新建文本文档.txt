@@ -7,3 +7,5 @@ new:test for rebase
 main:test for rebase
 
 new: third commit
+
+main: second commit

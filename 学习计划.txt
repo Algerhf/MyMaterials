@@ -1,4 +1,171 @@
-一、Java篇
+一、Java基础
+
+	基本数据类型（四类八种）
+		整数：byte  short int long 
+		浮点型：float double 
+		字符型：char  
+		布尔型：boolean
+	
+	关键字（52个）、标识符、常量、变量、运算符
+
+	封装、继承、多态
+	
+	集合：
+		单列集合：
+			Collection
+				|----List  有序，可重复，带索引
+					|----ArrayList   底层数据结构是数组，查询快，增删慢，线程不安全，效率高
+					|----LinkedList  底层数据结构是链表，查询慢，增删快，线程不安全，效率高
+					|----Vector      底层数据结构是数组，查询快，增删慢，线程安全，效率低
+			
+				|----Set   无序，唯一，不带索引
+					|----HastSet
+					|----SortedSet
+						|----TreeSet
+		双列集合：
+			Map
+				|----HashMap
+				|----SortedMap
+					|----TreeMap
+				|----HashTable
+	
+	泛型：
+		JDK 1.5引入的新特性，本质是参数化类型的应用，就是将要操作的数据类型指定为一个参数，在使用的使用再指定具体的类型
+		这种参数类型可以用在类、接口和方法的创建中，分别称为泛型类、泛型接口和泛型方法
+	
+	注解：
+	
+	反射：
+		将要操作的类的各个组成部分封装成新的对象。反射是框架设计的灵魂
+	
+	IO流：
+	
+	多线程：
+	
+	异常：
+	
+	网络编程：
+	
+	1、Java Object类方法
+	
+		clone()  
+			浅复制：属性是基本数据类型时，复制的是值;属性是引用数据类型时，复制的是地址引用，是同一个对象（两个引用指向同一个内存地址）  
+			深复制：属性是基本数据类型时，复制的是值;属性是引用数据类型时，复制的是对象的属性值，不是同一个对象（两个引用指向不同的内存地址，值一样）  
+			
+			Object类默认的clone方法是浅复制;如果该对象的属性存在引用数据类型，且要实现深复制，该类需要【实现cloneable接口，并实现clone方法】
+			该属性对应的类也需要【实现cloneable接口，并实现clone方法】（如果还有嵌套，也需要实现）
+			
+		equals()  
+			Object类默认的equals方法，比较的是两个对象的内存地址
+			
+		getClass()
+			获取运行时类型,返回值为Class对象
+		
+		hashcode()
+			返回该对象的哈希码值，是为了提高哈希表的性能（HashTable）
+		
+		toString()
+			返回一个String字符串,用于描述当前对象的信息,可以重写返回对自己有用的信息，默认返回的是当前对象的类名+hashCode的16进制数字。
+		
+		wait()
+			多线程用到的方法，作用是让当前线程进入等待状态，同时也会让当前线程释放它所持有的锁。直到其他线程调用此对象的 notify() 方法或 notifyAll() 方法，当前线程被唤醒
+			
+		notify()
+			多线程用到的方法，唤醒该对象等待的某个线程
+			
+		notifyAll()
+			多线程用到的方法，唤醒该对象等待的所有线程
+			
+		finalize()
+			对象在被GC释放之前一定会调用finalize方法，对象被释放前最后的挣扎,因为无法确定该方法什么时候被调用，很少使用
+	
+	2、HashMap原理，Hash冲突，并发集合，线程安全集合及实现原理
+	
+	3、HashMap 和 HashTable 区别
+	4、HashCode 作用，如何重载hashCode方法
+	5、ArrayList与LinkList区别与联系
+	6、GC机制
+	7、Java反射机制，Java代理模式
+	8、Java泛型
+	9、Synchronized原理
+	10、Volatile实现原理
+	11、方法锁、对象锁、类锁的意义和区别
+	12、线程同步的方法：Synchronized、lock、reentrantLock分析
+	13、Java锁的种类: 公平锁、乐观锁、互斥锁、分段锁、偏向锁、自旋锁等
+	14、ThreadLocal的原理和用法
+	15、ThreadPool的用法和示例
+	16、wait()和sleep()的区别
+
+	
+二、Java进阶
+	
+	Java虚拟机，Java运行，Java GC机制（可达性分析法，引用计数法）
+	Java对象的完整生命周期
+	JVM内存模型
+	进程间通信，线程间通信
+	JVM类加载机制
+	Java引用类型
+	设计模式：除常用设计模式之外，特别的，反射机制，代理模式
+	HTTP协议和HTTPS协议
+	Socket协议，Socket实现长连接
+	TCP和UDP协议
+	HTTP协议中GET和POST的具体实现
+	序列化和反序列化
+	线程池的实现原理
+	数据库基础知识：多表查询、索引、数据库事务
+
+三、Android基础
+
+	Application生命周期
+
+	Android Activity生命周期
+
+	Android Service、IntentService，Service和组件间通信
+
+	Activity的onNewIntent
+
+	Fragment的懒加载实现，参数传递与保存
+
+	ContentProvider实例详解
+
+	BroadcastReceiver使用总结
+
+	Android消息机制
+
+	Binder机制，共享内存实现原理
+
+	Android 事件分发机制
+
+	Android 多线程的实现：Thread、HandlerThread、AsyncTask、IntentService、RxJava
+
+	ActivityThread工作原理
+
+	嵌套滑动实现原理
+
+	RecyclerView与ListView(缓存原理，区别联系，优缺点)
+
+	View的绘制原理，自定义View，自定义ViewGroup
+
+	View、SurfaceView 与 TextureView
+
+	主线程Looper.loop为什么不会造成死循环
+
+	ViewPager的缓存实现
+
+	requestLayout，invalidate，postInvalidate区别与联系
+
+	AndroidP新特性
+
+	Android两种虚拟机
+
+	ADB常用命令
+
+	Asset目录与res目录的区别
+
+	Android SQLite的使用入门
+	
+	
+四、Java篇
 
 	Java中的类加载器：
 		系统加载器
@@ -51,9 +218,10 @@
 	
 	老年代：标记-压缩算法或标记-清除算法
 
-二、Android篇
+五、Android篇
 
-	一、Android框架体系架构
+	
+	1、Android框架体系架构
 		
 		1.1 高级UI
 			
@@ -83,9 +251,6 @@
 		模块化：基于代码层面的封装，分属同一功能/业务的代码进行分装成独立的模块，可以独立的运行，以页面、功能或其他不同粒度划分程度不同的模块，模块间通过接口调用，目的是降低模块间的耦合。
 		举一例子：模块就像多个 USB 插口的充电宝，可以和多部手机充电，接口可以随移插拔。复用性极强，可以独立管理。就像是独立的功能和项目（如淘宝：注册、登录、购物等），可以调用组件来组成模块，多个模块可以组合成业务框架。
 
-		
-		
-	
 	2、gradle
 	
 	3、git
@@ -113,10 +278,6 @@
 		Room
 		Navigation
 		WorkManager
-		
-	
-	6、C/C++
-	
 	
 	Android各版本新特性：
 		
@@ -409,7 +570,7 @@
 		
 	
 
-三、Linux
+六、Linux
 
 
-四、C/C++
+七、C/C++

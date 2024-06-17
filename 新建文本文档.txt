@@ -1,13 +1,1 @@
-This is my first commit for test
-
-test:this is my edit
-
-new:test for rebase
-
-main:test for rebase
-
-new: third commit
-
-main: second commit
-
-work: this is my edit
+deleteall
